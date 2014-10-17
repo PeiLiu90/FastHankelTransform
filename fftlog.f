@@ -39,7 +39,7 @@ c    common or data statements.
 c 2. All double precision constants explicitly suffixed d0.
 c    g77 is unusual in that it does NOT automatically promote
 c    real constants such as 1.1 to double precision 1.1d0.
-c 
+c
 c---End of revision history---------------------------------------------
 c
 c For more information about FFTLog, see
@@ -117,7 +117,7 @@ c to be about 1 (or 2, or pi, to taste).
 c
 c The FFTLog algorithm is (see Hamilton 2000):
 c 1. FFT the input array a_j to obtain the Fourier coefficients c_m ;
-c 2. Multiply c_m by 
+c 2. Multiply c_m by
 c       u_m = (kr)^[- i 2 m pi/(n dlnr)] U_mu[q + i 2 m pi/(n dlnr)]
 c    where
 c       U_mu(x) = 2^x Gamma[(mu+1+x)/2] / Gamma[(mu+1-x)/2]
@@ -150,7 +150,7 @@ c                                 -1/2
 c
 c The Fourier transforms may be done by making the substitutions
 c                 q-(1/2)                      -q-(1/2)
-c    A(r) = a(r) r          and   Ã(k) = ã(k) k    
+c    A(r) = a(r) r          and   Ã(k) = ã(k) k
 c
 c and Hankel transforming a(r) with a power law bias (k r)^q
 c
@@ -180,7 +180,7 @@ c          0
 c
 c may be done by making the substitutions
 c                 q                      -q
-c    A(r) = a(r) r    and   Ã(k) = ã(k) k    
+c    A(r) = a(r) r    and   Ã(k) = ã(k) k
 c
 c and Hankel transforming a(r) with a power law bias (k r)^q
 c
@@ -408,7 +408,7 @@ c Policy is to drop the potentially infinite constant in the transform.
             if (anint(xp).eq.xp.and.anint(xp).le.ZERO) then
               print *,'fhti: (mu+1+q)/2 =',nint(xp),
      &          ' is -ve integer, yields singular transform:'
-              print *,'   transform will omit additive constant that is 
+              print *,'   transform will omit additive constant that is
      &generically infinite,'
               print *,'   but that may be finite or zero if'
               print *,'   the sum of the elements of the input array a_j
@@ -416,7 +416,7 @@ c Policy is to drop the potentially infinite constant in the transform.
             else
               print *,'fhti: (mu+1-q)/2 =',nint(xm),
      &          ' is -ve integer, yields singular inverse transform:'
-              print *,'   inverse transform will omit additive constant 
+              print *,'   inverse transform will omit additive constant
      &that is generically'
               print *,'   infinite, but that may be finite or zero if'
               print *,'   the sum of the elements of the input array a_j
@@ -493,7 +493,7 @@ c                     0
 c
 c by making the substitutions
 c                 q-(1/2)                      -q-(1/2)
-c    A(r) = a(r) r          and   Ã(k) = ã(k) k    
+c    A(r) = a(r) r          and   Ã(k) = ã(k) k
 c
 c and applying a biased Hankel transform to a(r).
 c
@@ -578,7 +578,7 @@ c          0
 c
 c by making the substitutions
 c                 q                      -q
-c    A(r) = a(r) r    and   Ã(k) = ã(k) k    
+c    A(r) = a(r) r    and   Ã(k) = ã(k) k
 c
 c and applying a biased Hankel transform to a(r).
 c
@@ -615,6 +615,12 @@ c        local (automatic) variables
       integer j,l
       real*8 dlnr,jc,kr,lnkr,q
 c
+*
+*      print *,' n = ',n
+*      print *,' a = ',a(1)
+*      print *,' dir = ',dir
+*      print *,' wsave = ',wsave(1)
+
       l=2*n+15
       q=wsave(l+1)
       dlnr=wsave(l+2)
@@ -622,6 +628,7 @@ c
 c........a(r) = A(r) (r/rc)^(-dir*q)
       if (q.ne.ZERO) then
 c        centre point of array
+        print *,'aaaaaaaaaaaaaaaaaaaaaa'
         jc=dble(n+1)/TWO
         do j=1,n
           a(j)=a(j)*exp(-dir*q*(j-jc)*dlnr)
@@ -770,7 +777,7 @@ c and real part ar is guaranteed nonzero.
 c--------normal FFT back
       call drfftb(n,a,wsave)
 c--------reverse the array
-c        and at the same time undo the FFTs' multiplication by n 
+c        and at the same time undo the FFTs' multiplication by n
       do m=1,n/2
         ar=a(m)
         a(m)=a(n+1-m)/n

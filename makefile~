@@ -1,10 +1,10 @@
-CXX = g++ -O3
+CXX = g++ -g
 FC = gfortran
 
 objects= testFHT.o fftlog.o cdgamma.o drfftb.o drfftf.o drffti.o
 
 run: $(objects)
-	$(CXX) -o run $(objects) -lgfortran
+	g++ -O3 -o run $(objects) -lgfortran
 
 .PHONY:clean
 clean:

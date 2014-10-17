@@ -1,30 +1,29 @@
 #include <iostream>
 #include <fstream>
-#include <cfortran.h>
-
 #include "math.h"
 using namespace std;
 
 extern "C"
 {
-    void fhti_(int * n, double * mu, double * q, double * dlnr,
-               double * kr, int * kropt, double * wsave, int * ok);
-    void fht_(int * n, double * a , int * dir, double * wsave);
+    void FHTI_(int * n, double * mu, double * q, double * dlnr,
+               double * kr, int * kropt, double ** wsave, bool * ok);
+    void FHT_(int * n, double * a[] , int * dir, double ** wsave);
 }
 
 int main()
 {
-    double logrmin=-4.;
-    double logrmax=4.;
-    int N=1024;
-
+    int N=64;
+    int Nm=4096;
     double mu=0.;
     double q=0.;
+    double dlnr=0.;
     double kr=1.;
     int kropt=3;
     int dir=1;
-    double dlnr;
+    double logrmin=-4.;
+    double logrmax=4.;
     double logrc=(logrmin+logrmax)/2.;
+
     double dlogr=(logrmax-logrmin)/double(N);
     dlnr=dlogr*log(10.);
     double nc=double(N+1)/2.;
@@ -32,7 +31,7 @@ int main()
     double * a= new double [N];
     double * k= new double [N];
     double * ka=new double [N];
-    double * wsave = new double [5*N];
+    double * wsave = new double [2*Nm+3*(Nm/2)+19];
     for(int i=0;i<N;i++)
     {
         r[i]=pow(10.,logrc+(i-nc+1)*dlogr);
@@ -44,17 +43,18 @@ int main()
         input<<r[i]<<"  "<<a[i]<<endl;
     }
     input.close();
-//CALL FORTRAN SUBROUTINE, compute Fast Hankel Transform
-    int ok;
-    int clogical=0;
-    ok=C2FLOGICAL(clogical);
 
-    fhti_(& N, & mu, & q, & dlnr, & kr, & kropt, wsave, & ok);
-
-    clogical=F2CLOGICAL(ok);
-
-    fht_(& N, a, & dir, wsave);
-//END FORTRAN CALLING
+    bool ok;
+    fhti_(& N, & mu, & q, & dlnr, & kr, & kropt, & wsave, & ok);
+    //fht_(& N, & a, & dir, & wsave);
+    if(ok)
+    {
+        cout<<"HHHHHH"<<endl;
+    }
+    else
+    {
+        cout<<"IIIIIIIIII"<<endl;
+    }
     double logkc=log10(kr)-logrc;
     for(int i=0;i<N;i++)
     {
@@ -62,16 +62,13 @@ int main()
         ka[i]=pow(k[i],mu+1.)*pow(M_E,-k[i]*k[i]/2.);
     }
 
-    ofstream output("output.txt");
-    for(int i=0;i<N;i++)
-    {
-        output<<k[i]<<"  "<<ka[i]<<"  "<<a[i]<<endl;
-    }
-    output.close();
+//    ofstream output("output.txt");
+//    for(int i=0;i<N;i++)
+//    {
+//        output<<k[i]<<"  "<<ka[i]<<"  "<<a[i]<<endl;
+//    }
+//    output.close();
 
-    delete [] r;
-    delete [] a;
-    delete [] wsave;
 
     return 0;
 }

@@ -101,12 +101,12 @@ c        forward transform
 c--------choose parameters
   100 print *,'enter period range log10(r_min), log10(r_max) [',
      *  logrmin,',',logrmax,']'
-      read (*,*,end=300,err=300) logrmin,logrmax
+*      read (*,*,end=300,err=300) logrmin,logrmax
 c        central point log10(r_c) of periodic interval
       logrc=(logrmin+logrmax)/2.d0
       print *,'central point of periodic interval at log10(r_c) =',logrc
       print *,'enter number of points [',n,']'
-      read (*,*,end=300,err=300) n
+*      read (*,*,end=300,err=300) n
       if (n.gt.NMAX) then
         print *,n,' exceeds declared maximum',NMAX
         goto 100
@@ -118,13 +118,13 @@ c        log spacing of points
       dlnr=dlogr*log(10.d0)
 c        order mu of Bessel function
       print *,'enter order mu of Bessel function [',mu,']'
-      read (*,*,end=300,err=300) mu
+*      read (*,*,end=300,err=300) mu
 c        bias exponent q
       print *,'enter bias exponent q [',q,']'
-      read (*,*,end=300,err=300) q
+*      read (*,*,end=300,err=300) q
 c        kr = k_c r_c
       print *,'enter kr = k_c r_c [',kr,']'
-      read (*,*,end=300,err=300) kr
+*      read (*,*,end=300,err=300) kr
 c--------r^(mu+1) exp(-r^2/2)
       do i=1,n
         r=10.d0**(logrc+(i-nc)*dlogr)

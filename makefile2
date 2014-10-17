@@ -1,0 +1,14 @@
+run:fftlog.o cdgamma.o drfftb.o drfftf.o drffti.o fftlogtest.o
+	gfortran -O3 fftlog.o cdgamma.o drfftb.o drfftf.o drffti.o fftlogtest.o -o run
+cdgamma.o:cdgamma.f
+	gfortran -O3 -c cdgamma.f
+drfftb.o:drfftb.f
+	gfortran -O3 -c drfftb.f
+drfftf.o:drfftf.f
+	gfortran -O3 -c drfftf.f
+drffti.o:drffti.f
+	gfortran -O3 -c drffti.f
+fftlog.o:fftlog.f
+	gfortran -O3 -c fftlog.f
+fftlogtest.o:fftlogtest.f
+	gfortran -O3 -c fftlogtest.f
